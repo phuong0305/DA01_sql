@@ -1,0 +1,15 @@
+select name from city where countrycode = 'USA' and population >120000;
+Select * from city where countrycode ='JPN';
+select city, state from station;
+select distinct city from station where regexp_like (city,'^[AEIOU]');
+select distinct city from station where regexp_like (city,'[aeiou]$');
+select distinct city from station where regexp_like (city,'^[^AEIOU]');
+select name from Employee order by name;
+select name from Employee where salary > 2000 and months <10;
+select product_id from Products where low_fats ='Y' and recyclable ='Y';
+select name from Customer where referee_id <> 2 or referee_id is null ;
+select name, area, population from world where area >= 300000 and population >= 25000000;
+select distinct author_id as id from Views where viewer_id >=1 and author_id = viewer_id order by author_id;
+SELECT part, assembly_step FROM parts_assembly where finish_date is NOT null ;
+select * from lyft_drivers where yearly_salary >= 70000 or yearly_salary <= 30000;
+select advertising_channel from uber_advertising where money_spent > 100000 and year = 2019;
