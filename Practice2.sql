@@ -34,3 +34,16 @@ where (total_sales - cogs) <= 0
 group by manufacturer
 order by total_loss DESC;
 --EX9
+select id, movie, décription, rating from Cinema
+where id % 2 = 1 and description not like '%boring%'
+order by rating DESC;
+--EX10
+Select teacher_id, count(distinct subject_id)
+from teacher group by teacher_id;
+--EX11
+select user_id, count(follower_id) as followers_count from Followers
+group by user_id order by user_id;
+--EX12
+select class from courses
+group by class
+having count(student) >=5;
