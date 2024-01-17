@@ -44,3 +44,18 @@ from month_7
 join month_6
 ON month_7.user_id = month_6.user_id
 group by month_7.month;
+--EX6
+SELECT product_id, year AS first_year, quantity, price
+FROM Sales
+WHERE (product_id, year) in (
+SELECT product_id, MIN(year) 
+FROM Sales
+GROUP BY product_id;
+--EX7
+SELECT  SUBSTR(trans_date,1,7) as month, country, count(id) as trans_count, 
+SUM(CASE WHEN state = 'approved' then 1 else 0 END) as approved_count, SUM(amount) as trans_total_amount, 
+SUM(CASE WHEN state = 'approved' then amount else 0 END) as approved_total_amount
+FROM Transactions
+GROUP BY month, country
+--EX8
+
