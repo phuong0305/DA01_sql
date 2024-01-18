@@ -63,4 +63,46 @@ from Customer
 group by customer_id
 having count(distinct (product_key))=(select count(product_key) from Product )
 --EX9
+select a.employee_id 
+from employees as a
+right join employees as b 
+on a.employee_id = b.manager_id
+group by a.employee_id
+having sum(a.salary) <30000;
+--EX10
+with job_id_count as
+(select company_id, COUNT(distinct job_id) FROM job_listings
+where title is not NULL and description is not NULL
+GROUP BY (company_id)
+HAVING COUNT(distinct job_id) >=2)
+select COUNT(distinct company_id) from Job_id_count;
+--EX11
+(SELECT name AS results
+FROM MovieRating JOIN Users USING(user_id)
+GROUP BY name
+ORDER BY COUNT(*) DESC, name
+LIMIT 1)
 
+UNION ALL
+
+(SELECT title AS results
+FROM MovieRating JOIN Movies USING(movie_id)
+WHERE EXTRACT(YEAR_MONTH FROM created_at) = 202002
+GROUP BY title
+ORDER BY AVG(rating) DESC, title
+LIMIT 1);
+--EX12
+WITH all_ids AS (
+SELECT ra.requester_id AS id, COUNT(*) AS cnt
+FROM RequestAccepted ra
+GROUP BY ra.requester_id
+UNION ALL -- don't remove duplicates
+SELECT ra.accepter_id AS id, COUNT(*) AS cnt 
+ ROM RequestAccepted ra
+ GROUP BY ra.accepter_i)
+
+SELECT id, SUM(cnt) AS num
+FROM all_ids
+GROUP BY id
+ORDER BY num DESC
+LIMIT 1
