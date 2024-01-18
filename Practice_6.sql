@@ -58,4 +58,9 @@ SUM(CASE WHEN state = 'approved' then amount else 0 END) as approved_total_amoun
 FROM Transactions
 GROUP BY month, country
 --EX8
+select customer_id 
+from Customer 
+group by customer_id
+having count(distinct (product_key))=(select count(product_key) from Product )
+--EX9
 
