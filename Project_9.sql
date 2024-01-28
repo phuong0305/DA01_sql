@@ -73,4 +73,29 @@ insert into sales_dataset_rfm_prj
 (QTR_ID)
 select extract (quarter from orderdate) from sales_dataset_rfm_prj 
 
+--EX5:
+alter table sales_dataset_rfm_prj 
+alter column quantityordered type numeric using (trim (quantityordered):: numeric)
 
+with CTE as
+(select Q1-1.5*IQR as min_value, Q3+1.5*IQR as max_value
+from
+(select 
+percentile_cont(0.25) within group (order by quantityordered) as Q1,
+percentile_cont(0.75) within group (order by quantityordered) as Q3,
+((percentile_cont(0.75) within group (order by quantityordered)) 
+- (percentile_cont(0.25) within group (order by quantityordered))) as IQR
+from sales_dataset_rfm_prj) as a)
+select * from sales_dataset_rfm_prj 
+where quantityordered < (select min_value from cte)
+and quantityordered > (select max_value from cte)
+
+C2:
+
+with cte2 as
+(select quantityordered, (select avg(quantityordered) from sales_dataset_rfm_prj) as avg,
+  (select stddev(quantityordered) from sales_dataset_rfm_prj ) as std
+from sales_dataset_rfm_prj)
+select quantityordered, (quantityorderd - avg)/std as z_core
+from CTE2
+where ABS ((quantityordered-avg)/std)>3;
